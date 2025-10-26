@@ -1,4 +1,4 @@
-document.body.innerHTML = '';
+ document.body.innerHTML = '';
         document.body.style.cssText = `
             margin: 0;
             padding: 0;
@@ -9,13 +9,17 @@ document.body.innerHTML = '';
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
         `;
 
         const gameContainer = document.createElement('div');
         gameContainer.style.cssText = `
             position: relative;
-            width: 800px;
-            height: 600px;
+            width: 100%;
+            max-width: 800px;
+            height: 70vh;
+            max-height: 600px;
         `;
         document.body.appendChild(gameContainer);
 
@@ -23,10 +27,17 @@ document.body.innerHTML = '';
         canvas.width = 800;
         canvas.height = 600;
         canvas.style.cssText = `
+            width: 100%;
+            height: 100%;
             border: 3px solid rgba(255, 255, 255, 0.3);
             border-radius: 15px;
             background: linear-gradient(180deg, #87CEEB 0%, #98FB98 100%);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            touch-action: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         `;
         gameContainer.appendChild(canvas);
 
@@ -46,7 +57,8 @@ document.body.innerHTML = '';
             backdrop-filter: blur(10px);
             border: 2px solid rgba(255, 255, 255, 0.5);
             z-index: 10;
-            min-width: 300px;
+            min-width: 280px;
+            max-width: 90vw;
         `;
         gameContainer.appendChild(startModal);
 
@@ -56,7 +68,7 @@ document.body.innerHTML = '';
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            font-size: 32px;
+            font-size: clamp(24px, 6vw, 32px);
             margin-bottom: 30px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         `;
@@ -75,7 +87,7 @@ document.body.innerHTML = '';
         const recordText = document.createElement('div');
         recordText.textContent = 'РЕКОРД';
         recordText.style.cssText = `
-            font-size: 14px;
+            font-size: clamp(12px, 3vw, 14px);
             color: #666;
             font-weight: bold;
             margin-bottom: 5px;
@@ -86,7 +98,7 @@ document.body.innerHTML = '';
         recordValue.id = 'bestScoreDisplay';
         recordValue.textContent = '0';
         recordValue.style.cssText = `
-            font-size: 24px;
+            font-size: clamp(20px, 5vw, 24px);
             font-weight: bold;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
@@ -98,7 +110,7 @@ document.body.innerHTML = '';
         livesContainer.style.cssText = `
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: clamp(10px, 3vw, 15px);
             margin: 20px 0;
         `;
         startModal.appendChild(livesContainer);
@@ -106,8 +118,8 @@ document.body.innerHTML = '';
         for (let i = 0; i < 3; i++) {
             const heart = document.createElement('div');
             heart.style.cssText = `
-                width: 40px;
-                height: 40px;
+                width: clamp(30px, 8vw, 40px);
+                height: clamp(30px, 8vw, 40px);
                 background: #ff6b6b;
                 clip-path: path('M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z');
                 animation: pulse 2s infinite ${i * 0.3}s;
@@ -119,7 +131,7 @@ document.body.innerHTML = '';
         lastScore.id = 'lastScore';
         lastScore.textContent = '0';
         lastScore.style.cssText = `
-            font-size: 48px;
+            font-size: clamp(36px, 10vw, 48px);
             font-weight: bold;
             background: linear-gradient(135deg, #667eea, #764ba2);
             -webkit-background-clip: text;
@@ -135,34 +147,55 @@ document.body.innerHTML = '';
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 15px 40px;
-            font-size: 18px;
+            padding: clamp(12px, 4vw, 18px) clamp(30px, 8vw, 50px);
+            font-size: clamp(16px, 4vw, 20px);
             font-weight: bold;
             border-radius: 50px;
             cursor: pointer;
             margin-top: 20px;
             transition: all 0.3s ease;
             box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+            touch-action: manipulation;
         `;
         startModal.appendChild(startBtn);
 
         const scoreDisplay = document.createElement('div');
         scoreDisplay.style.cssText = `
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: clamp(10px, 2vw, 20px);
+            right: clamp(10px, 2vw, 20px);
             background: rgba(255, 255, 255, 0.9);
-            padding: 15px 25px;
+            padding: clamp(10px, 2vw, 15px) clamp(15px, 3vw, 25px);
             border-radius: 25px;
-            font-size: 18px;
+            font-size: clamp(14px, 3vw, 18px);
             font-weight: bold;
             color: #333;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border: 2px solid rgba(255,255,255,0.5);
             display: none;
+            z-index: 5;
         `;
         scoreDisplay.innerHTML = 'ОЧКИ: <span id="currentScore">0</span>';
         gameContainer.appendChild(scoreDisplay);
+
+        const shieldDisplay = document.createElement('div');
+        shieldDisplay.style.cssText = `
+            position: absolute;
+            top: clamp(10px, 2vw, 20px);
+            left: clamp(10px, 2vw, 20px);
+            background: rgba(255, 255, 255, 0.9);
+            padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 20px);
+            border-radius: 20px;
+            font-size: clamp(12px, 2.5vw, 16px);
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid rgba(255,255,255,0.5);
+            display: none;
+            z-index: 5;
+        `;
+        shieldDisplay.innerHTML = '🛡️ <span id="shieldTime">0</span>с';
+        gameContainer.appendChild(shieldDisplay);
 
         let game = {
             running: false,
@@ -192,7 +225,8 @@ document.body.innerHTML = '';
             },
             lastPowerUpTime: 0,
             powerUpInterval: 30000,
-            mouse: { x: 400, y: 300 }
+            mouse: { x: 400, y: 300 },
+            touchActive: false
         };
 
         recordValue.textContent = game.bestScore;
@@ -305,14 +339,6 @@ document.body.innerHTML = '';
             ctx.stroke();
             
             ctx.shadowBlur = 0;
-            
-            ctx.fillStyle = '#FFD700';
-            ctx.font = '12px Arial';
-            ctx.fillText(
-                `Щит: ${(timeLeft/1000).toFixed(1)}с`, 
-                game.player.x - 25, 
-                game.player.y - game.player.radius - 25
-            );
         }
 
         function drawPowerUps() {
@@ -428,10 +454,13 @@ document.body.innerHTML = '';
             const dy = game.mouse.y - game.player.y;
             const distance = Math.sqrt(dx * dx + dy * dy);
             
+            const isMobile = 'ontouchstart' in window;
+            const gravityMultiplier = isMobile ? 1.5 : 1.0;
+            
             const force = Math.min(0.5, 300 / (distance + 100));
             
-            game.player.velocityX += dx * force * game.player.currentGravity;
-            game.player.velocityY += dy * force * game.player.currentGravity;
+            game.player.velocityX += dx * force * game.player.currentGravity * gravityMultiplier;
+            game.player.velocityY += dy * force * game.player.currentGravity * gravityMultiplier;
             
             game.player.velocityX *= 0.96;
             game.player.velocityY *= 0.96;
@@ -460,8 +489,17 @@ document.body.innerHTML = '';
         }
 
         function updateShield() {
-            if (game.shield.active && Date.now() > game.shield.endTime) {
-                game.shield.active = false;
+            if (game.shield.active) {
+                const timeLeft = game.shield.endTime - Date.now();
+                if (timeLeft <= 0) {
+                    game.shield.active = false;
+                    shieldDisplay.style.display = 'none';
+                } else {
+                    shieldDisplay.style.display = 'block';
+                    document.getElementById('shieldTime').textContent = (timeLeft / 1000).toFixed(1);
+                }
+            } else {
+                shieldDisplay.style.display = 'none';
             }
         }
 
@@ -528,6 +566,7 @@ document.body.innerHTML = '';
             lastScore.textContent = game.score;
             startModal.style.display = 'block';
             scoreDisplay.style.display = 'none';
+            shieldDisplay.style.display = 'none';
             
             game.obstacles = [];
             game.particles = [];
@@ -538,8 +577,8 @@ document.body.innerHTML = '';
             game.currentSpeed = game.baseSpeed;
             game.speedMultiplier = 1.0;
             game.player.currentGravity = game.player.baseGravity;
-            game.player.x = 400;
-            game.player.y = 300;
+            game.player.x = canvas.width / 2;
+            game.player.y = canvas.height / 2;
             game.player.velocityX = 0;
             game.player.velocityY = 0;
             game.lastPowerUpTime = 0;
@@ -572,10 +611,45 @@ document.body.innerHTML = '';
             requestAnimationFrame(gameLoop);
         }
 
+        // Обработчики мыши
         canvas.addEventListener('mousemove', (e) => {
             const rect = canvas.getBoundingClientRect();
-            game.mouse.x = e.clientX - rect.left;
-            game.mouse.y = e.clientY - rect.top;
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            game.mouse.x = (e.clientX - rect.left) * scaleX;
+            game.mouse.y = (e.clientY - rect.top) * scaleY;
+        });
+
+        // Обработчики касаний
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            game.touchActive = true;
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            game.mouse.x = (touch.clientX - rect.left) * scaleX;
+            game.mouse.y = (touch.clientY - rect.top) * scaleY;
+        });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (!game.touchActive) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const touch = e.touches[0];
+            const scaleX = canvas.width / rect.width;
+            const scaleY = canvas.height / rect.height;
+            
+            game.mouse.x = (touch.clientX - rect.left) * scaleX;
+            game.mouse.y = (touch.clientY - rect.top) * scaleY;
+        });
+
+        canvas.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            game.touchActive = false;
         });
 
         startBtn.addEventListener('click', () => {
@@ -608,8 +682,35 @@ document.body.innerHTML = '';
             button:active {
                 transform: translateY(-1px);
             }
+            
+            @media (max-width: 768px) {
+                #gameContainer {
+                    height: 60vh;
+                }
+            }
+            
+            @media (max-width: 480px) {
+                #gameContainer {
+                    height: 50vh;
+                }
+                #startModal {
+                    padding: 20px 15px;
+                }
+            }
         `;
         document.head.appendChild(style);
 
         lastScore.textContent = '0';
+
+        // Адаптация размера canvas при изменении размера окна
+        function resizeCanvas() {
+            const container = gameContainer.getBoundingClientRect();
+            canvas.style.width = container.width + 'px';
+            canvas.style.height = container.height + 'px';
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
    
+
